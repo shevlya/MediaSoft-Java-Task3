@@ -1,17 +1,25 @@
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) {
-        // Press Alt+Enter with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        RoomService<EconomyRoom> economyRoomService = new BasRoomService<>();
+        EconomyRoom economyRoom = new EconomyRoom(353);
+        economyRoomService.clean(economyRoom);
+        economyRoomService.reserve(economyRoom);
 
-        // Press Shift+F10 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
-
-            // Press Shift+F9 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Ctrl+F8.
-            System.out.println("i = " + i);
+        try {
+            economyRoomService.reserve(economyRoom);
+        } catch (RoomReadyReserveException e){
+            System.out.println(e.getMessage());
         }
+
+        economyRoomService.free(economyRoom);
+
+        UltraLuxRoom ultraLuxRoom = new UltraLuxRoom(789);
+        LuxRoomService<UltraLuxRoom> luxRoomService = new LuxRoomServiceImpl<>();
+        luxRoomService.reserve(ultraLuxRoom);
+        luxRoomService.foodDelivery(ultraLuxRoom);
+
+        //Проверьте, что нельзя в новом сервисе заказывать доставку еды из не люксовых комнат.
+        StandardRoom standardRoom = new StandardRoom(423);
+        //luxRoomService.foodDelivery(standardRoom);
     }
 }
